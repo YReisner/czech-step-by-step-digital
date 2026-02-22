@@ -1607,8 +1607,8 @@ const Flashcards = ({ activeLesson, currentModule, setCurrentView, setPoints }) 
             <p className="text-slate-500 mt-2 text-center">Here are the words you just practiced.</p>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-slate-200 mb-8 shadow-sm">
-            <table className="w-full text-left border-collapse">
+          <div className="overflow-x-auto rounded-2xl border border-slate-200 mb-8 shadow-sm">
+            <table className="w-full text-left border-collapse min-w-[450px]">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 text-sm uppercase tracking-wider">
                   <th className="p-4 md:px-6 font-semibold w-1/2">Czech</th>
@@ -1646,19 +1646,19 @@ const Flashcards = ({ activeLesson, currentModule, setCurrentView, setPoints }) 
       </div>
 
       <div className="relative h-80 w-full perspective-1000 group cursor-pointer" onClick={() => setIsFlipped(!isFlipped)}>
-        <div className={`w-full h-full transition-all duration-500 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}>
+        <div className={`w-full h-full transition-all duration-500 transform-style-3d relative ${isFlipped ? 'rotate-y-180' : ''}`}>
           
           {/* Front of card (Czech) */}
-          <div className={`absolute inset-0 bg-white rounded-3xl shadow-lg border-2 border-blue-100 flex flex-col items-center justify-center backface-hidden ${isFlipped ? 'hidden' : 'flex'}`}>
+          <div className="absolute inset-0 bg-white rounded-3xl shadow-lg border-2 border-blue-100 flex flex-col items-center justify-center backface-hidden">
              <span className="uppercase tracking-widest text-blue-400 font-bold text-sm mb-4">Czech</span>
-             <h2 className="text-5xl font-extrabold text-slate-800 text-center px-4">{words[index].cz}</h2>
+             <h2 className="text-4xl md:text-5xl font-extrabold text-slate-800 text-center px-4">{words[index].cz}</h2>
              <p className="text-slate-400 mt-8 text-sm flex items-center gap-2"><RotateCcw size={16}/> Tap to flip</p>
           </div>
-
+ 
           {/* Back of card (English) */}
-          <div className={`absolute inset-0 bg-indigo-600 rounded-3xl shadow-lg flex flex-col items-center justify-center backface-hidden ${!isFlipped ? 'hidden' : 'flex'}`}>
+          <div className="absolute inset-0 bg-indigo-600 rounded-3xl shadow-lg flex flex-col items-center justify-center backface-hidden rotate-y-180">
              <span className="uppercase tracking-widest text-indigo-300 font-bold text-sm mb-4">English</span>
-             <h2 className="text-5xl font-extrabold text-white text-center px-4">{words[index].en}</h2>
+             <h2 className="text-4xl md:text-5xl font-extrabold text-white text-center px-4">{words[index].en}</h2>
           </div>
         </div>
       </div>
@@ -1782,8 +1782,8 @@ const MatchingGame = ({ activeLesson, currentModule, setCurrentView, setPoints }
             )}
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-slate-200 mb-8 shadow-sm">
-            <table className="w-full text-left border-collapse">
+          <div className="overflow-x-auto rounded-2xl border border-slate-200 mb-8 shadow-sm">
+            <table className="w-full text-left border-collapse min-w-[550px]">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 text-sm uppercase tracking-wider">
                   <th className="p-4 md:px-6 font-semibold w-2/5">Czech</th>
@@ -1964,6 +1964,7 @@ const GrammarQuiz = ({ activeLesson, currentModule, setCurrentView, setPoints })
 const DialogueViewer = ({ activeLesson, setCurrentView, setPoints }) => {
   const dialogueData = COURSE_DATA[activeLesson].dialogue;
   const [voices, setVoices] = useState([]);
+  const [showTranslation, setShowTranslation] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
     const updateVoices = () => {
@@ -1975,6 +1976,13 @@ const DialogueViewer = ({ activeLesson, setCurrentView, setPoints }) => {
       window.speechSynthesis.onvoiceschanged = null;
     };
   }, []);
+
+  const toggleTranslation = (idx: number) => {
+    setShowTranslation(prev => ({
+      ...prev,
+      [idx]: !prev[idx]
+    }));
+  };
 
   const getGender = (name) => {
     const femaleNames = ['Eva', 'Marina', 'Paní', 'Doktorka', 'Adéla', 'Maminka', 'Irena', 'Babička', 'Kolegyně'];
@@ -2066,7 +2074,9 @@ const DialogueViewer = ({ activeLesson, setCurrentView, setPoints }) => {
                   ${isUser1 ? 'bg-rose-100 text-rose-600' : 'bg-blue-100 text-blue-600'}`}>
                   {line.speaker[0]}
                 </div>
-                <div className={`max-w-[80%] p-5 rounded-3xl group relative
+                <div 
+                  onClick={() => toggleTranslation(i)}
+                  className={`max-w-[80%] p-5 rounded-3xl group relative cursor-pointer
                   ${isUser1 ? 'bg-slate-50 rounded-tl-none' : 'bg-blue-50 rounded-tr-none'}`}>
                   <div className="flex justify-between items-start gap-2">
                     <span className="block text-xs font-bold text-slate-400 mb-1 uppercase tracking-wider">{line.speaker}</span>
@@ -2080,8 +2090,8 @@ const DialogueViewer = ({ activeLesson, setCurrentView, setPoints }) => {
                   </div>
                   <p className="text-lg font-medium text-slate-800 mb-1">{line.cz}</p>
                   
-                  {/* English translation hidden until hover */}
-                  <div className="overflow-hidden transition-all duration-300 max-h-0 opacity-0 group-hover:max-h-20 group-hover:opacity-100 group-hover:mt-3">
+                  {/* English translation hidden until hover or click */}
+                  <div className={`overflow-hidden transition-all duration-300 max-h-0 opacity-0 group-hover:max-h-40 group-hover:opacity-100 group-hover:mt-3 ${showTranslation[i] ? 'max-h-40 opacity-100 mt-3' : ''}`}>
                     <p className="text-sm text-slate-500 italic border-t border-slate-200/60 pt-2">"{line.en}"</p>
                   </div>
                 </div>
