@@ -1,11 +1,27 @@
-<div align="center">
+# CzechStep
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+A comprehensive Czech language learning application built with React, Tailwind CSS, and Express.
 
-  <h1>Built with AI Studio</h2>
+## Features
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+- **24 Interactive Lessons**: Covering everything from basic introductions to complex grammar like the conditional mood and passive voice.
+- **Interactive Modules**: Each lesson includes:
+  - **Insights & Tips**: Cultural and grammatical context.
+  - **Dialogues**: Real-world conversation practice with translations.
+  - **Vocabulary Flashcards**: Practice key words with a flip-card interface.
+  - **Matching Games**: Test your memory by matching Czech and English terms.
+  - **Grammar Quizzes**: Reinforce your understanding of Czech cases and verb conjugations.
+- **XP System**: Earn points as you progress through the lessons.
+- **Full-Stack Ready**: Includes an Express backend with SQLite integration for future progress persistence.
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## Tech Stack
 
-</div>
+- **Frontend**: React 19, Tailwind CSS 4, Lucide React, Motion.
+- **Backend**: Express, Better-SQLite3.
+- **Build Tool**: Vite.
+
+## Getting Started
+
+1. The application starts automatically in the AI Studio preview.
+2. Navigate through the lessons on the home screen.
+3. Complete modules to earn XP and master the Czech language!
